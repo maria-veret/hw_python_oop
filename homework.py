@@ -16,16 +16,17 @@ class InfoMessage:
     def get_message(self) -> str:
         """Вывести строку сообщения."""
         return (f'Тип тренировки: {self.training_type}; '
-                'Длительность: {self.duration:.3f} ч.; '
-                'Дистанция: {self.distance:.3f} км; '
-                'Ср. скорость: {self.speed:.3f} км/ч; '
-                'Потрачено ккал: {self.calories:.3f}.')
+                f'Длительность: {self.duration:.3f} ч.; '
+                f'Дистанция: {self.distance:.3f} км; '
+                f'Ср. скорость: {self.speed:.3f} км/ч; '
+                f'Потрачено ккал: {self.calories:.3f}.')
 
 
 class Training:
     """Базовый класс тренировки."""
 
     M_IN_KM = 1000
+    LEN_STEP = 0.65
 
     def __init__(self,
                  action: int,
@@ -38,8 +39,7 @@ class Training:
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        LEN_STEP = 0.65
-        distance = self.action * LEN_STEP / self.M_IN_KM
+        distance = self.action * self.LEN_STEP / self.M_IN_KM
         return distance
 
     def get_mean_speed(self) -> float:
@@ -90,14 +90,16 @@ class SportsWalking(Training):
         w_coeff_calorie_1 = 0.035
         w_coeff_calorie_2 = 0.029
         calories = ((w_coeff_calorie_1 * self.weight
-                     + (self.get_mean_speed()**2
-                        / self.height) * w_coeff_calorie_2
+                     + (self.get_mean_speed()**2 / self.height)
+                    * w_coeff_calorie_2
                     * self.weight) * self.duration * 60)
         return calories
 
 
 class Swimming(Training):
     """Тренировка: плавание."""
+
+    LEN_STEP = 1.38
 
     def __init__(self,
                  action: int,
@@ -126,9 +128,7 @@ class Swimming(Training):
 
     def get_distance(self) -> float:
         """Получить дистанцию в км."""
-        LEN_STEP = 1.38
-        M_IN_KM = 1000
-        distance = self.action * LEN_STEP / M_IN_KM
+        distance = self.action * self.LEN_STEP / self.M_IN_KM
         return distance
 
 
