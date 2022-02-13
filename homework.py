@@ -90,7 +90,7 @@ class SportsWalking(Training):
         w_coeff_calorie_1 = 0.035
         w_coeff_calorie_2 = 0.029
         calories = ((w_coeff_calorie_1 * self.weight
-                     + (self.get_mean_speed()**2 / self.height)
+                     + ((self.get_mean_speed()**2) // self.height)
                     * w_coeff_calorie_2
                     * self.weight) * self.duration * 60)
         return calories
