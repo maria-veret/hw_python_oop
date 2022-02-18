@@ -40,7 +40,8 @@ class Training:
 
     def get_spent_calories(self) -> float:
         """Получить количество затраченных калорий."""
-        pass
+        raise NotImplementedError('Вызывайте этот метод '
+                                  'только для объектов дочерних классов')
 
     def show_training_info(self) -> InfoMessage:
         """Вернуть информационное сообщение о выполненной тренировке."""
@@ -85,7 +86,6 @@ class SportsWalking(Training):
 @dataclass
 class Swimming(Training):
     """Тренировка: плавание."""
-
     action: int
     duration: float
     weight: float
@@ -110,7 +110,7 @@ class Swimming(Training):
         return self.action * self.LEN_STEP / self.M_IN_KM
 
 
-workout_dict = {
+WORKOUT_DICT = {
     'SWM': Swimming,
     'RUN': Running,
     'WLK': SportsWalking
@@ -119,8 +119,10 @@ workout_dict = {
 
 def read_package(workout_type: str, data: list) -> Training:
     """Прочитать данные полученные от датчиков."""
-    work = workout_dict[workout_type]
-    return work(*data)
+    if workout_type not in WORKOUT_DICT:
+        raise ValueError('Неизвестный тип тренировки')
+    else:
+        return WORKOUT_DICT[workout_type](*data)
 
 
 def main(training: Training) -> None:
